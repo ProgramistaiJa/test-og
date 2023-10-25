@@ -3,6 +3,16 @@ import path from 'path'
 import matter from 'gray-matter'
 
 import { MDXRemote } from 'next-mdx-remote/rsc'
+import Button from '@/components/mdx/Button'
+
+export async function generateMetadata({ params } : any) {
+    const blog = getPost(params);
+
+    return{
+        title: blog.frontMatter.title,
+        description: blog.frontMatter.description,
+    }
+}
 
 export async function generateStaticParams() {
     const files = fs.readdirSync(path.join('blogs'))
@@ -33,7 +43,7 @@ export default function Post({ params } :any) {
         <article className='prose prose-sm md:prose-base lg:prose-lg prose-slate !prose-invert mx-auto'>
             <h1>{props.frontMatter.title}</h1>
             
-            <MDXRemote source={props.content}/>
+            <MDXRemote source={props.content} components={{Button}}/>
         </article>
     )
 }
